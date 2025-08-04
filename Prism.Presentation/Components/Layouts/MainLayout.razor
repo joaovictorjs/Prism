@@ -1,3 +1,10 @@
 ﻿@inherits LayoutComponentBase
 
-@Body
+<div class="flex flex-row h-full w-full">
+    <SideBar />
+
+    <div class="flex flex-col flex-1">
+        <TopBar />
+        @Body
+    </div>
+</div>

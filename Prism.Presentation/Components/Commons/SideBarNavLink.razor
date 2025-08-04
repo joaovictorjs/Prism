@@ -1,0 +1,14 @@
+<NavLink href="@Route" ActiveClass="dark:bg-indigo-700" Match="@NavLinkMatch.All"
+    class="flex flex-row h-8 items-center px-4 rounded dark:hover:bg-neutral-800 gap-2">
+    <div class="@IconClass"></div>
+    @DisplayName
+</NavLink>
+
+@code {
+    [Parameter]
+    public string Route { get; set; } = string.Empty;
+    [Parameter]
+    public string DisplayName { get; set; } = string.Empty;
+    [Parameter]
+    public string IconClass { get; set; } = string.Empty;
+}

@@ -4,6 +4,15 @@
 @theme {
     --font-sans: "Poppins", sans-serif;
     --text-base: 14px;
+    --text-xs: calc(0.75rem);
+    --text-sm: calc(0.875rem);
+    --text-md: var(--text-base);     
+    --text-lg: calc(1.125rem);  
+    --text-xl: calc(1.25rem);   
+    --text-2xl: calc(1.5rem);   
+    --text-3xl: calc(1.875rem); 
+    --text-4xl: calc(2.25rem);  
+    --text-5xl: calc(3rem);   
 }
 
 @layer {
