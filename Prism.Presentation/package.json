@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "tailwind": "npx @tailwindcss/cli -i ./Components/App.css -o ./wwwroot/css/app.css --watch",
+    "dev": "start cmd /k \"npm run tailwind\" ;& start cmd /k \"dotnet watch\""
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.11",
+    "tailwindcss": "^4.1.11"
+  }
+}
