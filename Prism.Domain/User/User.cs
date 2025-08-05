@@ -15,7 +15,7 @@ public class User
         Id = Guid.NewGuid();
         Name = name;
         Email = email;
-        Password = password;
+        Password = BCrypt.Net.BCrypt.HashPassword(password);
         IsBlocked = false;
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = DateTime.UtcNow;
