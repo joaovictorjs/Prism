@@ -13,8 +13,8 @@ public class User
     public User(string name, string email, string password)
     {
         Id = Guid.NewGuid();
-        Name = name;
-        Email = email;
+        Name = name.Trim();
+        Email = email.Trim().ToLower();
         Password = BCrypt.Net.BCrypt.HashPassword(password);
         IsBlocked = false;
         CreatedAt = DateTime.UtcNow;
