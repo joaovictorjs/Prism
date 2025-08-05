@@ -10,4 +10,9 @@
     <Folder Include="wwwroot\css\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Prism.Application\Prism.Application.csproj" />
+    <ProjectReference Include="..\Prism.Infrastructure\Prism.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

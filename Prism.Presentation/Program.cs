@@ -1,10 +1,13 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
+using Prism.Infrastructure.Data;
 using Prism.Presentation.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents().AddInteractiveServerComponents();
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite("Data Source=Prism.db"));
 builder.Services.AddAuthorization();
 builder
     .Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -33,4 +36,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapStaticAssets();
 app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
+
+using (var scope = app.Services.CreateScope())
+{
+    var appDbContext = scope.ServiceProvider.GetService<AppDbContext>();
+    appDbContext?.Database.Migrate();
+}
+
 app.Run();
