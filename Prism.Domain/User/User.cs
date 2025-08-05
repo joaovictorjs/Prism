@@ -2,7 +2,7 @@ namespace Prism.Domain.User;
 
 public class User
 {
-    public Guid Guid { get; private set; }
+    public Guid Id { get; private set; }
     public string Name { get; private set; }
     public string Email { get; private set; }
     public string Password { get; private set; }
@@ -12,7 +12,7 @@ public class User
 
     public User(string name, string email, string password)
     {
-        Guid = Guid.NewGuid();
+        Id = Guid.NewGuid();
         Name = name;
         Email = email;
         Password = password;
