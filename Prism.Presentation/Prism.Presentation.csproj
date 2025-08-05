@@ -1,18 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-
   <ItemGroup>
     <Folder Include="wwwroot\css\" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Prism.Application\Prism.Application.csproj" />
     <ProjectReference Include="..\Prism.Infrastructure\Prism.Infrastructure.csproj" />
   </ItemGroup>
-
 </Project>
