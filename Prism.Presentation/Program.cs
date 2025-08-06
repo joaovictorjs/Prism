@@ -1,36 +1,36 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Prism.Application.Auth.Interfaces;
+using Prism.Application.Auth.Services;
 using Prism.Infrastructure.Data;
 using Prism.Presentation.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite("Data Source=Prism.db"));
-builder.Services.AddAuthorization();
 builder
     .Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
         options.LoginPath = "/login";
+        options.LogoutPath = "/logout";
+        options.AccessDeniedPath = "/access-denied";
         options.Cookie.Name = "auth-token";
-        options.Cookie.MaxAge = TimeSpan.FromDays(7);
     });
+builder.Services.AddAuthorization();
 builder.Services.AddCascadingAuthenticationState();
+builder.Services.AddTransient<ILoginService, LoginService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
-
 app.UseAntiforgery();
 app.UseAuthentication();
 app.UseAuthorization();
