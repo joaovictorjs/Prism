@@ -60,6 +60,9 @@
 
     private string ErrorMessage { get; set; } = string.Empty;
 
+    protected override async Task OnInitializedAsync() {
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+    }
 
     private async Task HandleLogin()
     {
