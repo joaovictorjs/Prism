@@ -1,0 +1,84 @@
+﻿@page "/login"
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authentication.Cookies
+@using Microsoft.AspNetCore.Components.Authorization
+@using Prism.Application.Auth.Interfaces
+@using System.Text.Json
+@layout EmptyLayout
+@inject ILoginService LoginService
+@inject NavigationManager NavigationManager
+
+<div
+    class="absolute left-1/2 top-1/4 -translate-x-1/2 p-8 rounded dark:bg-neutral-900 flex flex-col gap-4 min-w-100 w-1/4">
+    <div>
+        <h3 class="font-bold">LOGIN</h3>
+        <p class="dark:text-neutral-500">Provide your credentials</p>
+    </div>
+
+    <EditForm Model="@LoginFormModel" class="flex flex-col gap-2" FormName="LoginForm" OnValidSubmit="@HandleLogin">
+        <DataAnnotationsValidator />
+
+        <div class="flex flex-col gap-1">
+            <label>Email</label>
+            <InputText type="email" class="h-12 dark:bg-neutral-800 rounded px-2" placeholder="Enter your email address"
+                @bind-Value="@LoginFormModel.Email" />
+        </div>
+
+        <div class="flex flex-col gap-1">
+            <label>Password</label>
+            <InputText type="password" class="h-12 dark:bg-neutral-800 rounded px-2" placeholder="Enter your password"
+                @bind-Value="@LoginFormModel.Password" />
+        </div>
+
+        <div class="flex flex-row gap-1 items-center">
+            <InputCheckbox type="checkbox" class="dark:accent-indigo-700" @bind-Value="@LoginFormModel.Remember" />
+            <label>Remember</label>
+        </div>
+
+        <ValidationSummary class="px-8 py-4 dark:bg-red-500/25 border rounded border-red-500/50 list-disc" />
+
+        @if (!string.IsNullOrWhiteSpace(ErrorMessage))
+        {
+            <div class="px-8 py-4 dark:bg-red-500/25 border rounded border-red-500/50">@ErrorMessage</div>
+        }
+
+        <button type="submit" class="h-12 dark:bg-indigo-700 rounded justify-center disabled:dark:bg-neutral-800">
+            Enter
+        </button>
+    </EditForm>
+</div>
+
+@code {
+    [SupplyParameterFromQuery]
+    private string ReturnUrl { get; set; } = string.Empty;
+
+    [SupplyParameterFromForm]
+    private LoginFormModel LoginFormModel { get; set; } = new();
+
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
+
+    private string ErrorMessage { get; set; } = string.Empty;
+
+
+    private async Task HandleLogin()
+    {
+        var user = await LoginService.Authenticate(LoginFormModel.Email, LoginFormModel.Password);
+        if (user == null)
+        {
+            ErrorMessage = "Email and/or password are incorrect.";
+            return;
+        }
+        await HttpContext.SignInAsync(
+            CookieAuthenticationDefaults.AuthenticationScheme,
+            user,
+            new AuthenticationProperties
+            {
+                IsPersistent = LoginFormModel.Remember,
+                ExpiresUtc = LoginFormModel.Remember ? DateTime.UtcNow.AddDays(7) : null,
+                IssuedUtc = DateTime.UtcNow,
+            }
+        );
+        NavigationManager.NavigateTo(ReturnUrl, true);
+    }
+}
