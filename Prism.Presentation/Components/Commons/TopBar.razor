@@ -1,1 +1,20 @@
-<div class="border-b border-b-neutral-700 dark:bg-neutral-900 h-14 w-full"></div>
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@rendermode InteractiveServer
+
+<div class="border-b border-b-neutral-700 dark:bg-neutral-900 h-14 w-full flex flex-row-reverse p-1">
+    <div class="h-full w-fit p-1.5 dark:hover:bg-neutral-800 flex flex-row rounded items-center gap-2">
+        <img src="https://cdn3d.iconscout.com/3d/premium/thumb/homem-avatar-6299539-5187871.png?f=webp"
+            class="h-full aspect-square dark:bg-neutral-700 rounded" />
+
+        <p>@Username</p>
+    </div>
+</div>
+
+@code {
+    private string Username {get;set;} = string.Empty;
+
+    protected override async Task OnInitializedAsync() {
+        var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        Username = state?.User?.Identity?.Name ?? "Not authenticated";
+    }
+}
