@@ -36,6 +36,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapStaticAssets();
 app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
+app.MapBlazorHub(options => options.CloseOnAuthenticationExpiration = true);
 
 using (var scope = app.Services.CreateScope())
 {
